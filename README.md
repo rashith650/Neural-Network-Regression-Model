@@ -1,16 +1,19 @@
 # Developing a Neural Network Regression Model
-
+## NAME: MOHAMED RASHITH S
+## REG NO:212223243003
 ## AIM
 
 To develop a neural network regression model for the given dataset.
 
 ## THEORY
 
-This code builds and trains a feedforward neural network in PyTorch for a regression task. The model takes a single input feature, passes it through two hidden layers with ReLU activation, and predicts one continuous output. It uses MSE loss and RMSProp optimizer to minimize the error between predictions and actual values over training epochs.
+This code builds and trains a feedforward neural network in PyTorch for a regression task.
+The model takes a single input feature, passes it through two hidden layers with ReLU activation, and predicts one continuous output.
+It uses MSE loss and RMSProp optimizer to minimize the error between predictions and actual values over training epochs.
 
 ## Neural Network Model
 
-<img width="1059" height="642" alt="Screenshot 2026-02-09 114708" src="https://github.com/user-attachments/assets/6bf0e5bf-5c18-49d9-a852-2d7c225dcf20" />
+<img width="930" height="643" alt="image" src="https://github.com/user-attachments/assets/eaebc717-17d1-4762-89a3-b584d2b05979" />
 
 ## DESIGN STEPS
 
@@ -44,17 +47,48 @@ Evaluate the model with the testing data.
 
 ## PROGRAM
 ### Name:MOHAMED RASHITH S
-### Register Number:212223243003
-```python
+### Register Number: 212223243003
+```
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+
+def rash():
+    print("Name: MOHAMED RASHITH S")
+    print("Register Number: 212223243003")
+
+dataset1 = pd.read_csv('/content/MyMLData.csv')
+
+X = dataset1[['Input']].values
+y = dataset1[['Output']].values
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.33, random_state=33
+)
+
+scaler = MinMaxScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.float32).view(-1,1)
+X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
+y_test_tensor = torch.tensor(y_test, dtype=torch.float32).view(-1,1)
+
 class NeuralNet(nn.Module):
     def __init__(self):
         super().__init__()
-       elf.fc1 = nn.Linear(1, 8)
-        self.fc2 = nn.Linear(8, 10)
-        self.fc3 = nn.Linear(10, 1)
-
+        self.fc1 = nn.Linear(1, 10)
+        self.fc2 = nn.Linear(10, 6)
+        self.fc3 = nn.Linear(6, 1)
         self.relu = nn.ReLU()
         self.history = {'loss': []}
+        rash()
+        print("Neural Network Regression Model Initialized")
 
     def forward(self, x):
         x = self.relu(self.fc1(x))
@@ -62,41 +96,31 @@ class NeuralNet(nn.Module):
         x = self.fc3(x)
         return x
 
-# Initialize the Model, Loss Function, and Optimizer
-ai_brain = NeuralNet()
+ai_rash = NeuralNet()
+
 criterion = nn.MSELoss()
-optimizer = optim.RMSprop(ai_brain.parameters(), lr=0.001)
+optimizer = optim.Adam(ai_rash.parameters(), lr=0.01)
 
-
-
-def train_model(ai_brain, X_train, y_train, criterion, optimizer, epochs=2000):
-   for epoch in range(epochs):
+def train_model(ai_rash, X_train, y_train, criterion, optimizer, epochs=2000):
+    rash()
+    for epoch in range(epochs):
         optimizer.zero_grad()
-
-        output = model(X_train)
-        loss = criterion(output, y_train)
-
+        outputs = ai_rash(X_train)
+        loss = criterion(outputs, y_train)
         loss.backward()
         optimizer.step()
-
-        model.history['loss'].append(loss.item())
-
+        ai_rash.history['loss'].append(loss.item())
         if epoch % 200 == 0:
-            print(f"Epoch [{epoch}/{epochs}], Loss: {loss.item():.6f}")
+            print(f'Epoch [{epoch}/{epochs}], Loss: {loss.item():.6f}')
 
-
-
-train_model(ai_brain, X_train_tensor, y_train_tensor, criterion, optimizer)
-
-
+train_model(ai_rash, X_train_tensor, y_train_tensor, criterion, optimizer)
 
 with torch.no_grad():
-    test_loss = criterion(ai_brain(X_test_tensor), y_test_tensor)
-    print(f"Test Loss: {test_loss.item():.6f}")
+    rash()
+    test_loss = criterion(ai_rash(X_test_tensor), y_test_tensor)
+    print(f'Test Loss: {test_loss.item():.6f}')
 
-
-
-loss_df = pd.DataFrame(ai_brain.history)
+loss_df = pd.DataFrame(ai_rash.history)
 
 loss_df.plot()
 plt.xlabel("Epochs")
@@ -104,37 +128,35 @@ plt.ylabel("Loss")
 plt.title("Loss during Training")
 plt.show()
 
+X_n1_1 = torch.tensor([[9]], dtype=torch.float32)
+prediction = ai_rash(torch.tensor(scaler.transform(X_n1_1), dtype=torch.float32)).item()
 
-X_new = torch.tensor([[9]], dtype=torch.float32)
-
-X_new_scaled = scaler.transform(X_new)
-X_new_tensor = torch.tensor(X_new_scaled, dtype=torch.float32)
-
-prediction = ai_brain(X_new_tensor).item()
-
-print(f"Prediction: {prediction}")
-
+rash()
+print(f'Prediction for input 9: {prediction}')
 
 
 ```
 ## Dataset Information
 
-<img width="675" height="627" alt="Screenshot 2026-02-09 103525" src="https://github.com/user-attachments/assets/bc44959e-e94f-48b2-a10c-ef3727f28690" />
+<img width="410" height="503" alt="image" src="https://github.com/user-attachments/assets/c8b4f75b-d1a3-4351-965f-3bfd8bebbc50" />
+
 
 ## OUTPUT
-<img width="581" height="257" alt="Screenshot 2026-02-09 111753" src="https://github.com/user-attachments/assets/24612f31-69a8-469b-959f-0b9b93fc7a3b" />
+
+<img width="474" height="290" alt="image" src="https://github.com/user-attachments/assets/7582fe28-9e4e-4d09-9765-e13614d63b14" />
 
 
 ### Training Loss Vs Iteration Plot
-<img width="863" height="613" alt="Screenshot 2026-02-09 111839" src="https://github.com/user-attachments/assets/5ed57b15-4c21-493b-b0f0-b7e88ba44ed8" />
+<img width="796" height="426" alt="image" src="https://github.com/user-attachments/assets/834b0772-efb4-4ca7-ab23-7f0cfd3e8c30" />
 
 
 
 ### New Sample Data Prediction
 
-<img width="441" height="44" alt="image" src="https://github.com/user-attachments/assets/8aa1970b-72eb-4f0b-92a8-e8497fc8647d" />
+<img width="300" height="62" alt="image" src="https://github.com/user-attachments/assets/d092c69e-b7e6-4db3-a826-849f30113535" />
 
 
 ## RESULT
 
-Neural network regression model for the given dataset has been done successfully.
+Successfully executed the code to develop a neural network regression model.
+
